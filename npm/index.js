@@ -45,6 +45,8 @@ function createRollupConfig(options) {
     ...(options.node ? options.externalNode || [] : options.externalBrowser || []),
   ];
   const dist = options.dist || 'dist';
+  const esmExtension = typeof options.esmExtension === 'undefined' ? options.distPreset === 'esm' : true;
+
   return {
     input: options.input || (typescript ? './src/index.ts' : './src/index.js'),
     external: ext,
@@ -68,7 +70,7 @@ function createRollupConfig(options) {
         target: options.target ? options.target : options.node ? ['node14'] : undefined,
         external: ext,
       }),
-      options.esmExtension ? renameExtensions({
+      esmExtension ? renameExtensions({
         include: typescript ? ['**/*.ts', '**/*.js', '**/*.mjs'] : ['**/*.js', '**/*.mjs'],
         mappings: {
           '.js': '.mjs',
