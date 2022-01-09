@@ -1,0 +1,95 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react/umd/react.development.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.development.js"></script>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://cdn.jsdelivr.net/npm/@esm-bundle/react/esm/react.development.min.js",
+        "react-dom": "https://cdn.jsdelivr.net/npm/@esm-bundle/react-dom/esm/react-dom.development.min.js"
+      }
+    }
+  </script>
+
+    <script src="./dist/index.umd.js"></script>
+    <script src="./dist/inception/index.umd.js"></script>
+
+    <style>
+        #umd:before {content: 'umd'}
+        #esm:before {content: 'esm'}
+        #esmi:before {content: 'esm (inception)'}
+
+        div.test { margin-bottom: 1em; background: yellow }
+        div.success { background: limegreen; }
+
+    </style>
+</head>
+<body>
+
+    <div class="test" id="umd"></div>
+    <div class="test" id="esm"></div>
+    <div class="test" id="esmi"></div>
+
+    <script>
+      /** @type {import("dist/types")} */
+      const lib = BuildToolsLibrary;
+
+      let ready = false;
+
+      lib.helloWorld('test');
+      lib.testAsync().then(() => {
+        if (ready) {
+          document.getElementById('umd').classList.add('success');
+        }
+      })
+      lib.testBundles()
+      lib.testGenerator();
+
+      ReactDOM.render(
+        React.createElement(lib.ReactTest, {}, []),
+        document.getElementById('umd')
+      );
+
+      lib.generateId().then(t => console.log('umd', t));
+
+      ready = true;
+    </script>
+
+    <script type="module">
+        import {helloWorld, testAsync, testBundles, testGenerator, ReactTest, generateId} from './dist/esm/index.js';
+        import { createElement } from 'react';
+        import { render } from 'react-dom';
+
+        let ready = false;
+
+        helloWorld('test');
+        testBundles()
+        testGenerator();
+        testAsync().then(() => {
+          if (ready) {
+            document.getElementById('esm').classList.add('success');
+          }
+        });
+
+        generateId().then(t => console.log('esm', t));
+
+        render(
+          createElement(ReactTest, {}, []),
+          document.getElementById('esm')
+        );
+
+        ready = true;
+    </script>
+
+    <script type="module">
+        import './dist/inception/esm/inception.js'
+        document.getElementById('esmi').classList.add('success');
+    </script>
+</body>
+</html>

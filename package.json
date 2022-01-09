@@ -1,0 +1,54 @@
+{
+  "name": "build-tools",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "scripts": {
+    "build": "tsc -p . --declaration --emitDeclarationOnly && rollup -c && rollup -c ./tools/build-inception.mjs",
+    "test-node": "node ./test-node.cjs && node ./test-node.mjs",
+    "test-web": "serve -l 3050 ."
+  },
+  "exports": {
+    ".": {
+      "node": {
+        "require": "./dist/cjs-node/index.js",
+        "import": "./dist/esm-node/index.mjs",
+        "default": "./dist/cjs-node/index.js"
+      },
+      "browser": {
+        "require": "./dist/cjs/index.js",
+        "import": "./dist/esm/index.js",
+        "default": "./dist/index.umd.js"
+      }
+    },
+    "./inception": {
+      "node": {
+        "require": "./dist/inception/cjs-node/inception.js",
+        "import": "./dist/inception/esm-node/inception.mjs",
+        "default": "./dist/inception/cjs-node/inception.js"
+      },
+      "browser": {
+        "require": "./dist/inception/cjs/inception.js",
+        "import": "./dist/inception/esm/inception.js",
+        "default": "./dist/inception/index.umd.js"
+      }
+    }
+  },
+  "dependencies": {
+    "@types/react": "^17.0.38",
+    "@types/react-dom": "^17.0.11",
+    "@types/uuid": "^8.3.4",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "serve": "^13.0.2",
+    "tslib": "^2.3.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "rollup-library-template": "./npm",
+    "rollup": "^2.63.0",
+    "typescript": "^4.5.4"
+  }
+}

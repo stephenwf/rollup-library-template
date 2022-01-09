@@ -1,0 +1,34 @@
+{
+  "name": "rollup-library-template",
+  "description": "Rollup helpers for bundling Typescript or JavaScript libraries to the web and node",
+  "repository": "https://github.com/stephenwf/rollup-library-template",
+  "keywords": [
+    "rollup",
+    "typescript",
+    "preset",
+    "bundle",
+    "esm",
+    "exports"
+  ],
+  "version": "1.0.0",
+  "license": "MIT",
+  "files": [
+    "index.js",
+    "index.mjs"
+  ],
+  "main": "index.js",
+  "module": "index.mjs",
+  "peerDependencies": {
+    "rollup": "^2"
+  },
+  "dependencies": {
+    "@betit/rollup-plugin-rename-extensions": "^0.1.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "esbuild": "^0.14.11",
+    "rollup-plugin-dts": "^4.1.0",
+    "rollup-plugin-esbuild": "^4.8.2",
+    "rollup-plugin-rename": "^1.0.1",
+    "rollup-plugin-sizes": "^1.0.4"
+  }
+}
