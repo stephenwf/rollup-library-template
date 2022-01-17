@@ -46,13 +46,16 @@ function createRollupConfig(options) {
   ];
   const dist = options.dist || 'dist';
   const esmExtension = typeof options.esmExtension === 'undefined' ? options.distPreset === 'esm' : true;
+  const nodeResolveOptions = options.nodeResolve;
+  const jsonOptions = options.jsonOptions;
+  const esuildOptions = options.esuildOptions;
 
-  return {
+  const finalConfig = {
     input: options.input || (typescript ? './src/index.ts' : './src/index.js'),
     external: ext,
     inlineDynamicImports: options.inlineDynamicImports,
     plugins: [
-      nodeResolve(options.node ? {
+      nodeResolve(nodeResolveOptions ? nodeResolveOptions : options.node ? {
         browser: false,
         preferBuiltins: true,
         exportConditions: ['node'],
@@ -61,10 +64,10 @@ function createRollupConfig(options) {
         browser: true,
         extensions,
       }),
-      json({
+      json(jsonOptions ? jsonOptions : {
         compact: options.minify,
       }),
-      esbuild({
+      esbuild(esuildOptions ? esbuildOptions : {
         minify: options.minify,
         platform: options.node ? 'node' : undefined,
         target: options.target ? options.target : options.node ? ['node14'] : undefined,
@@ -83,6 +86,11 @@ function createRollupConfig(options) {
     ] : undefined),
     ...(options.extra || {}),
   };
+
+  if (options.postProcess) {
+    return options.postProcess(finalConfig);
+  }
+  return finalConfig;
 }
 
 module.exports = {
