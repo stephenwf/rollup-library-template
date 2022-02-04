@@ -5,6 +5,11 @@ const baseConfig = {
   externalNode: ['uuid'],
   filesize: true,
   minify: true,
+  esbuildOptions: {
+    define: {
+      'process.env.NODE_ENV': 'true'
+    }
+  }
 };
 
 export default [

@@ -34,3 +34,12 @@ export * from './react-test';
 export function generateId() {
   return import('./test-dependency').then(r => r.generateId());
 }
+
+
+export function testProductionReplacement() {
+  if (process.env.NODE_ENV === 'production') {
+    return 'IN BUNDLE';
+  } else {
+    return 'NOT IN BUNDLE';
+  }
+}

@@ -48,7 +48,7 @@ function createRollupConfig(options) {
   const esmExtension = typeof options.esmExtension === 'undefined' ? options.distPreset === 'esm' : true;
   const nodeResolveOptions = options.nodeResolve;
   const jsonOptions = options.jsonOptions;
-  const esuildOptions = options.esuildOptions;
+  const esbuildOptions = options.esbuildOptions ? options.esbuildOptions : {};
 
   const finalConfig = {
     input: options.input || (typescript ? './src/index.ts' : './src/index.js'),
@@ -67,11 +67,12 @@ function createRollupConfig(options) {
       json(jsonOptions ? jsonOptions : {
         compact: options.minify,
       }),
-      esbuild(esuildOptions ? esbuildOptions : {
+      esbuild({
         minify: options.minify,
         platform: options.node ? 'node' : undefined,
         target: options.target ? options.target : options.node ? ['node14'] : undefined,
         external: ext,
+        ...esbuildOptions,
       }),
       esmExtension ? renameExtensions({
         include: typescript ? ['**/*.ts', '**/*.js', '**/*.mjs'] : ['**/*.js', '**/*.mjs'],
