@@ -23,9 +23,11 @@
   },
   "dependencies": {
     "@betit/rollup-plugin-rename-extensions": "^0.1.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.1.3",
     "esbuild": "^0.14.11",
+    "rollup-plugin-define": "^1.0.1",
     "rollup-plugin-dts": "^4.1.0",
     "rollup-plugin-esbuild": "^4.8.2",
     "rollup-plugin-rename": "^1.0.1",

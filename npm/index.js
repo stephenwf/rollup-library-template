@@ -4,6 +4,8 @@ const filesize = require('rollup-plugin-sizes');
 const esbuild = require('rollup-plugin-esbuild').default;
 const json = require("@rollup/plugin-json");
 const dts = require("rollup-plugin-dts").default;
+const commonjs = require('@rollup/plugin-commonjs');
+const define = require('rollup-plugin-define');
 
 function createDistPreset(type, dist, options) {
   switch (type) {
@@ -49,12 +51,18 @@ function createRollupConfig(options) {
   const nodeResolveOptions = options.nodeResolve;
   const jsonOptions = options.jsonOptions;
   const esbuildOptions = options.esbuildOptions ? options.esbuildOptions : {};
+  const commonjsOptions = options.commonjs || undefined;
 
   const finalConfig = {
     input: options.input || (typescript ? './src/index.ts' : './src/index.js'),
     external: ext,
     inlineDynamicImports: options.inlineDynamicImports,
     plugins: [
+      define({
+        replacements: {
+          'process.env.NODE_ENV': process.env.NODE_ENV === 'production' ? '"production"' : '"development"',
+        },
+      }),
       nodeResolve(nodeResolveOptions ? nodeResolveOptions : options.node ? {
         browser: false,
         preferBuiltins: true,
@@ -64,6 +72,7 @@ function createRollupConfig(options) {
         browser: true,
         extensions,
       }),
+      commonjs(commonjsOptions),
       json(jsonOptions ? jsonOptions : {
         compact: options.minify,
       }),
